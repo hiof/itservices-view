@@ -1,0 +1,22 @@
+<header class="lo-full">
+  <h1>{{meta.title}}</h1>
+</header>
+
+{{#each itservice}}
+<article class="lo-one-third itservices-item">
+    <header>
+        {{#if serviceurl}}<a href="{{serviceurl}}" target="_blank">
+            <h1>{{capitalizeFirstLetter name}}</h1>
+        </a>
+        {{else}}
+            <h1>{{capitalizeFirstLetter name}}</h1>
+        {{/if}}
+    </header>
+    <hr />
+    <footer>
+        <a href="#/it-tjenester/{{pageId}}">{{../meta.readmore}}</a>
+    </footer>
+</article>
+{{/each}}
+<hr style="width: 100%;" />
+
