@@ -29,12 +29,12 @@
                 "name": 'FAQ'
             },{
                 "url": 'mailto:itvakt@hiof.no',
-                "name": 'IT-vakt epost'
+                "name": 'Epost'
             }];
             templateSourceBreadcrumb = Hiof.Templates['itservices/breadcrumbs'];
             templateSource = Hiof.Templates['page/show'];
             templateSourceSupport = Hiof.Templates['itservices/support'];
-            markup = templateSourceBreadcrumb(data) + templateSource(data) + templateSourceSupport(data);
+            markup = templateSourceBreadcrumb(data) + templateSource(data) + templateSourceSupport(data) + templateSourceBreadcrumb(data);
         } else {
             templateSource = Hiof.Templates['itservices/list'];
 
