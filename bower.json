@@ -1,6 +1,6 @@
 {
   "name": "itservices-view",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "homepage": "https://github.com/hiof/itservices-view",
   "authors": [
     "Kenneth Dahlstrøm <kenneth.dahlstrom@hiof.no>"
@@ -8,11 +8,11 @@
   "description": "Hiof-itservices-view package",
   "license": "GNU",
   "dependencies": {
-    "bootstrap": "~3.1.1",
+    "bootstrap": "~3.3.5",
     "jquery.scrollTo": "~1.4.11",
     "handlebars": "~2.0.0",
     "pathjs": "https://github.com/mtrpcic/pathjs.git",
-    "frontend": "https://github.com/hiof/frontend.git#feature/implement-libraryservices-page",
+    "frontend": "https://github.com/hiof/frontend.git",
     "jQuery-ajaxTransport-XDomainRequest": "https://github.com/MoonScript/jQuery-ajaxTransport-XDomainRequest.git",
     "detectjs": "https://github.com/darcyclarke/Detect.js.git"
   }

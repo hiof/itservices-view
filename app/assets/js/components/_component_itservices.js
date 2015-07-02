@@ -27,7 +27,7 @@
             data.meta.support = [{
                 "url": 'http://www2.hiof.no/nor/it_drift/studenthjelp#/it-tjenester/23547',
                 "name": 'FAQ'
-            },{
+            }, {
                 "url": 'mailto:itvakt@hiof.no',
                 "name": 'Epost'
             }];
@@ -122,12 +122,29 @@
 
     // Run functions on load
     $(function() {
-      if (!$('#semesterstart').length) {
-        if ($('#itservices').length) {
-            initatePathItservices();
-            Path.listen();
+        if (!$('#semesterstart').length) {
+            if ($('#itservices').length) {
+                initatePathItservices();
+                Path.listen();
+            }
         }
-      }
+
+        $(document).on('click', '#itservices a', function(e) {
+            //e.preventDefault();
+            var url = $(this).attr('href');
+            if (url.substring(0, 2) == "#/") {
+                //debug('String starts with #/');
+            } else if (url.substring(0, 1) == "#") {
+                hash = url + "";
+                e.preventDefault();
+                setTimeout(function() {
+                    scrollToElement(hash);
+                }, 200);
+
+            }
+        });
+
+
     });
     // Expose functions to the window
 
