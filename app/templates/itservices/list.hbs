@@ -5,17 +5,10 @@
 {{#each itservice}}
 <article class="lo-one-third itservices-item">
     <header>
-        {{#if serviceurl}}<a href="{{serviceurl}}" target="_blank">
+        <a href="#/it-tjenester/{{pageId}}">
             <h1>{{capitalizeFirstLetter name}}</h1>
         </a>
-        {{else}}
-            <h1>{{capitalizeFirstLetter name}}</h1>
-        {{/if}}
     </header>
-    <hr />
-    <footer>
-        <a href="#/it-tjenester/{{pageId}}">{{../meta.readmore}}</a>
-    </footer>
 </article>
 {{/each}}
 <hr style="width: 100%;" />
