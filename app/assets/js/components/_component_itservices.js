@@ -24,13 +24,23 @@
 
         if (settings.template === 'single') {
             data.meta.pagetitle = data.page['0'].pagetitle;
-            data.meta.support = [{
-                "url": 'http://www2.hiof.no/nor/it_drift/studenthjelp#/it-tjenester/23547',
-                "name": 'FAQ'
-            }, {
-                "url": 'mailto:itvakt@hiof.no',
-                "name": 'Epost'
-            }];
+            if (settings.audience === 'employee') {
+                data.meta.support = [{
+                    "url": 'http://www2.hiof.no/nor/it_drift/ansatthjelp#/it-tjenester/24408',
+                    "name": 'FAQ'
+                }, {
+                    "url": 'mailto:itvakt@hiof.no',
+                    "name": 'Epost'
+                }];
+            } else {
+                data.meta.support = [{
+                    "url": 'http://www2.hiof.no/nor/it_drift/studenthjelp#/it-tjenester/23547',
+                    "name": 'FAQ'
+                }, {
+                    "url": 'mailto:itvakt@hiof.no',
+                    "name": 'Epost'
+                }];
+            }
             templateSourceBreadcrumb = Hiof.Templates['itservices/breadcrumbs'];
             templateSource = Hiof.Templates['page/show'];
             templateSourceSupport = Hiof.Templates['itservices/support'];
