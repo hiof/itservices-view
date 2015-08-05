@@ -4,19 +4,33 @@
 
 
     itservicesAppendData = function(data, settings) {
+
+        var lang = Hiof.options.language.toString();
+        var i18n = Hiof.options.i18n;
         //var data = semesterStartLoadData(options);
         //debug('From itservicesAppendData:');
-        //debug(data);
-        //debug(settings);
+        //debug(lang);
+        //debug(i18n.en.itservices.readmore);
         data.meta = settings;
         data.meta.type = 'itservices';
-        data.meta.readmore = Hiof.options.i18n.nb.itservices.readmore;
-
-        if (settings.audience === 'employee') {
-            data.meta.title = Hiof.options.i18n.nb.itservices.titleeployee;
+        if (lang == 'en') {
+            //debug("lang is english");
+            data.meta.readmore = i18n.en.itservices.readmore;
+            if (settings.audience === 'employee') {
+                data.meta.title = i18n.en.itservices.titleeployee;
+            } else {
+                data.meta.title = i18n.en.itservices.titlestudents;
+            }
         } else {
-            data.meta.title = Hiof.options.i18n.nb.itservices.titlestudents;
+            //debug("lang is norwegian");
+            data.meta.readmore = i18n.nb.itservices.readmore;
+            if (settings.audience === 'employee') {
+                data.meta.title = i18n.nb.itservices.titleeployee;
+            } else {
+                data.meta.title = i18n.nb.itservices.titlestudents;
+            }
         }
+
 
 
         //debug(data);
