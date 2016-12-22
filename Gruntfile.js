@@ -8,30 +8,25 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     moment: require('moment'),
     // Tasks
-    less: {
-      standard: {
-        options: {
-
-        },
-        files: [{
-          expand: true,
-          cwd: 'app/assets/less/',
-          src: ['*.less'],
-          dest: 'build/',
-          ext: '.css'
-        }]
+    sass: {
+      options: {
+      },
+      dist: {
+        files: {
+          'build/<%= pkg.name %>.css': 'app/assets/sass/itservices-view.scss',
+        }
       }
     },
     autoprefixer: {
       options: {
         browsers: ['last 2 versions', 'ie 8', 'ie 9']
-          //diff: 'build/config/*.diff'
+        //diff: 'build/config/*.diff'
       },
       prefix: {
         expand: true,
         //flatten: true,
         src: 'build/*.css'
-          //dest: 'tmp/css/prefixed/'
+        //dest: 'tmp/css/prefixed/'
       }
     },
     cssmin: {
@@ -146,94 +141,79 @@ module.exports = function(grunt) {
           outputConfigDir: 'build/',
         },
         files: [{
-            assets: [{
-              src: ['build/<%= pkg.name %>.v<%= pkg.version %>.min.js'],
-              dest: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.js'
-            }],
-            key: 'assets',
-            dest: '',
-            type: 'js',
-            ext: '.min.js'
-          },
+          assets: [{
+            src: ['build/<%= pkg.name %>.v<%= pkg.version %>.min.js'],
+            dest: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.js'
+          }],
+          key: 'assets',
+          dest: '',
+          type: 'js',
+          ext: '.min.js'
+        },
 
-          {
-            assets: [{
-              src: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.css',
-              dest: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.css'
-            }],
-            key: 'assets',
-            dest: '',
-            type: 'css',
-            ext: '.min.css'
-          }
-        ]
+        {
+          assets: [{
+            src: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.css',
+            dest: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.css'
+          }],
+          key: 'assets',
+          dest: '',
+          type: 'css',
+          ext: '.min.css'
+        }
+      ]
+    }
+  },
+  secret: grunt.file.readJSON('secret.json'),
+  sftp: {
+    stage: {
+      files: {
+        "./": "dist/**"
+      },
+      options: {
+        path: '<%= secret.stage.path %>',
+        srcBasePath: "dist/",
+        host: '<%= secret.stage.host %>',
+        username: '<%= secret.stage.username %>',
+        password: '<%= secret.stage.password %>',
+        //privateKey: grunt.file.read('id_rsa'),
+        //passphrase: '<%= secret.passphrase %>',
+        showProgress: true,
+        createDirectories: true,
+        directoryPermissions: parseInt(755, 8)
       }
     },
-    secret: grunt.file.readJSON('secret.json'),
-    sftp: {
-      stage: {
-        files: {
-          "./": "dist/**"
-        },
-        options: {
-          path: '<%= secret.stage.path %>',
-          srcBasePath: "dist/",
-          host: '<%= secret.stage.host %>',
-          username: '<%= secret.stage.username %>',
-          password: '<%= secret.stage.password %>',
-          //privateKey: grunt.file.read('id_rsa'),
-          //passphrase: '<%= secret.passphrase %>',
-          showProgress: true,
-          createDirectories: true,
-          directoryPermissions: parseInt(755, 8)
-        }
+    prod: {
+      files: {
+        "./": "dist/**"
       },
-      prod: {
-        files: {
-          "./": "dist/**"
-        },
-        options: {
-          path: '<%= secret.prod.path %>',
-          srcBasePath: "dist/",
-          host: '<%= secret.prod.host %>',
-          username: '<%= secret.prod.username %>',
-          password: '<%= secret.prod.password %>',
-          //privateKey: grunt.file.read('id_rsa'),
-          //passphrase: '<%= secret.passphrase %>',
-          showProgress: true,
-          createDirectories: true,
-          directoryPermissions: parseInt(755, 8)
-        }
+      options: {
+        path: '<%= secret.prod.path %>',
+        srcBasePath: "dist/",
+        host: '<%= secret.prod.host %>',
+        username: '<%= secret.prod.username %>',
+        password: '<%= secret.prod.password %>',
+        //privateKey: grunt.file.read('id_rsa'),
+        //passphrase: '<%= secret.passphrase %>',
+        showProgress: true,
+        createDirectories: true,
+        directoryPermissions: parseInt(755, 8)
       }
     }
-    //watch: {
-    //  hbs: {
-    //    files: ['app/templates/**/*.hbs'],
-    //    tasks: ['handlebars', 'copy:jstemplates'],
-    //    options: {
-    //      livereload: true,
-    //    },
-    //  },
-    //  js: {
-    //    files: ['app/assets/js/**/*.js', 'app/assets/js/**/*.json'],
-    //    tasks: ['jshint', 'concat:scripts', 'versioning:build'],
-    //    options: {
-    //      livereload: true,
-    //    },
-    //  },
-    //}
+  }
 
-  });
 
-  grunt.registerTask('subtaskJs', ['handlebars','jshint', 'concat:scripts', 'uglify']);
-  grunt.registerTask('subtaskCss', ['less', 'autoprefixer', 'cssmin']);
+});
 
-  grunt.registerTask('build', ['clean:build', 'clean:dist', 'subtaskJs', 'subtaskCss', 'versioning:build']);
-  grunt.registerTask('deploy', ['clean:build', 'clean:dist', 'subtaskJs', 'subtaskCss', 'versioning:deploy', 'copy:dist']);
+grunt.registerTask('subtaskJs', ['handlebars', 'concat:scripts', 'uglify']);
+grunt.registerTask('subtaskCss', ['sass', 'autoprefixer', 'cssmin']);
+
+grunt.registerTask('build', ['clean:build', 'clean:dist', 'subtaskJs', 'subtaskCss', 'versioning:build']);
+grunt.registerTask('deploy', ['clean:build', 'clean:dist', 'subtaskJs', 'subtaskCss', 'versioning:deploy', 'copy:dist']);
 
 
 
-  grunt.registerTask('deploy-staging2', ['deploy', 'sftp:stage']);
-  grunt.registerTask('deploy-prod2', ['deploy', 'sftp:prod']);
+grunt.registerTask('deploy-staging2', ['deploy', 'sftp:stage']);
+grunt.registerTask('deploy-prod2', ['deploy', 'sftp:prod']);
 
 };
