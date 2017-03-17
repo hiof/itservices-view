@@ -127,7 +127,7 @@ class ItservicesView {
         hash = url + "";
         e.preventDefault();
         setTimeout(function() {
-          scrollToElement(hash);
+          Hiof.scrollToElement(hash);
         }, 200);
 
       }
