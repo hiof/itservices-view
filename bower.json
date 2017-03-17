@@ -13,6 +13,7 @@
     "handlebars": "~2.0.0",
     "pathjs": "https://github.com/mtrpcic/pathjs.git",
     "frontend": "https://github.com/hiof/frontend.git",
+    "page-view": "https://github.com/hiof/page-view.git",
     "jQuery-ajaxTransport-XDomainRequest": "https://github.com/MoonScript/jQuery-ajaxTransport-XDomainRequest.git",
     "detectjs": "https://github.com/darcyclarke/Detect.js.git"
   }
