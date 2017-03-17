@@ -55,19 +55,34 @@ module.exports = function(grunt) {
       deploy: ['deploy/**/*'],
       build: ['build/**/*']
     },
-
-    jshint: {
+    eslint: {
       options: {
-        ignores: ['app/assets/js/templates/templates.js']
+        //format: require('babel-eslint'),
+        quiet: true
+        //rulePath: ['node_modules/eslint-rules-es2015/lib/index.js']
       },
-      files: ['app/assets/js/**/*.js', 'Gruntfile.js', 'bower.json', 'package.json']
+      target: ['app/assets/js/**/*.js']
     },
+    //jshint: {
+    //  options: {
+    //    ignores: ['app/assets/js/templates/templates.js']
+    //  },
+    //  files: ['app/assets/js/**/*.js', 'Gruntfile.js', 'bower.json', 'package.json']
+    //},
     handlebars: {
       options: {
         namespace: 'Hiof.Templates',
         processName: function(filePath) {
           if (filePath.substring(0, 4) === 'vend') {
-            return filePath.replace(/^vendor\/frontend\/app\/templates\//, '').replace(/\.hbs$/, '');
+            if (filePath.substring(7, 10) === 'art') {
+              return filePath.replace(/^vendor\/articles-view\/app\/templates\//, '').replace(/\.hbs$/, '');
+            }else if (filePath.substring(7, 10) === 'acc') {
+              return filePath.replace(/^vendor\/accordion-view\/app\/templates\//, '').replace(/\.hbs$/, '');
+            }else if (filePath.substring(7, 10) === 'pag') {
+              return filePath.replace(/^vendor\/page-view\/app\/templates\//, '').replace(/\.hbs$/, '');
+            }else if (filePath.substring(7, 10) === 'foo') {
+              return filePath.replace(/^vendor\/footer-view\/app\/templates\//, '').replace(/\.hbs$/, '');
+            }
           }else{
             return filePath.replace(/^app\/templates\//, '').replace(/\.hbs$/, '');
           }
@@ -75,7 +90,18 @@ module.exports = function(grunt) {
       },
       all: {
         files: {
-          "build/templates.js": ["vendor/frontend/app/templates/page/show.hbs", "app/templates/**/*.hbs"]
+          "build/templates.js": ["vendor/page-view/app/templates/page/show.hbs", "app/templates/**/*.hbs"]
+        }
+      }
+    },
+    babel: {
+      options: {
+        sourceMap: true
+      },
+      dist: {
+        files: {
+          'build/_view.js': 'vendor/frontend/app/assets/js/components/_view.js',
+          'build/_<%= pkg.name %>.js': 'app/assets/js/components/_component_itservices.js'
         }
       }
     },
@@ -88,9 +114,11 @@ module.exports = function(grunt) {
           'vendor/jquery.scrollTo/jquery.scrollTo.js',
           'build/templates.js',
           'vendor/detectjs/detect.min.js',
-          'vendor/frontend/app/assets/js/components/__helper.js',
-          'vendor/frontend/app/assets/js/components/__options.js',
-          'app/assets/js/components/_component_itservices.js'
+          //'vendor/frontend/app/assets/js/components/__helper.js',
+          //'vendor/frontend/app/assets/js/components/__options.js',
+          //'vendor/frontend/app/assets/js/components/_view.js',
+          'build/_view.js',
+          'build/_<%= pkg.name %>.js'
         ],
         dest: 'build/<%= pkg.name %>.v<%= pkg.version %>.min.js'
       }
@@ -205,7 +233,7 @@ module.exports = function(grunt) {
 
 });
 
-grunt.registerTask('subtaskJs', ['handlebars', 'concat:scripts', 'uglify']);
+grunt.registerTask('subtaskJs', ['eslint','handlebars', 'babel', 'concat:scripts', 'uglify']);
 grunt.registerTask('subtaskCss', ['sass', 'autoprefixer', 'cssmin']);
 
 grunt.registerTask('build', ['clean:build', 'clean:dist', 'subtaskJs', 'subtaskCss', 'versioning:build']);
